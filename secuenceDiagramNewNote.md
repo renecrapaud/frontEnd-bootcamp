@@ -11,7 +11,7 @@
 
         user-->>browser: Data note field
         user-->>browser: Data email field
-        validates email data browser 
+        Note over browser: validates email data 
         browser-->>user: Alerts any mistake
         user-->>browser: Click send button
 
@@ -21,5 +21,5 @@
         deactivate server
 
         browser-->>user: Alerts operation status
-        add note in page browser
+        Note over browser: add note in page
 ```
