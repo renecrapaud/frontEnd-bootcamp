@@ -17,6 +17,6 @@
         deactivate server
 
         browser-->>user: Alerts operation status
-        Note over browser: If error remove note in DOM-API
-        Note over browser: clean data form note fields in DOM-API
+        Note over browser: If error, remove note in DOM-API
+        Note over browser: clear data form note fields in DOM-API
 ```
