@@ -13,7 +13,7 @@
 
         browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
         activate server
-        server-->>browser: [{ "notes": { content: "single page app does not reload the whole page", date: "2019-05-25T15:15:59.905Z"} }]
+        server-->>browser: [{ "content": "Data saved", "date": "2025-09-08" }]
         deactivate server
 
         browser-->>user: Alerts operation status
