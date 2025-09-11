@@ -27,10 +27,11 @@
     function Total(props) {
         return (
         <>
-            <p>
-            Number of exercises
-            : {props.parts.reduce((total, part) => total + part.exercises, 0)}
-            </p>
+            <h4>
+            Total of <span>
+            { props.parts.reduce((total, part) => total + part.exercises, 0) }
+            </span> exercises
+            </h4>
         </>
         )
     }
