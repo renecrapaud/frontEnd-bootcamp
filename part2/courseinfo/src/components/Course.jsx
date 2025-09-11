@@ -23,12 +23,24 @@
         </>
         )
     }
+    
+    function Total(props) {
+        return (
+        <>
+            <p>
+            Number of exercises
+            : {props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises}
+            </p>
+        </>
+        )
+    }
 
     function Course(props) {
         return (
             <>
                 <Header course={props.course.name} />
                 <Content parts={props.course.parts} />
+                <Total parts={props.course.parts} />
             </>
         )
     }
