@@ -17,14 +17,14 @@ const App = () => {
       alert(`${newName} is already added to phonebook`)
       return
     }
+    const newId = persons.length + 1
     const nameObject = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1
+      id: newId.toString()
     }
     phoneBookEntry.create(nameObject)
       .then(response => {
-        console.log(response.data)
         setPersons(persons.concat(response.data))
         setNewName('')
         setNewNumber('')
@@ -43,6 +43,11 @@ const App = () => {
     setSearchField(event.target.value)
   }
 
+  const handleClickDelete = (id) => {
+    phoneBookEntry.deleteEntry(id)
+    setPersons(persons.filter(pers => pers.id !== id))
+  }
+
   useEffect(() => {
     phoneBookEntry
       .getAll()
@@ -55,9 +60,10 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Filter searchField={searchField} hdlSearchFld={handleSearchField}/>
-      <PersonForm addName={addName} newName={newName} hdlNameChg={handleNameChange} hdlNumberChg={handleNumberChange} newNumber={newNumber} />
+      <PersonForm addName={addName} newName={newName} hdlNameChg={handleNameChange} 
+        hdlNumberChg={handleNumberChange} newNumber={newNumber} />
       <h2>Numbers</h2>
-      <Persons personsFiltered={bookFiltered}/>
+      <Persons personsFiltered={bookFiltered} hdlClickDel={handleClickDelete}/>
     </div>
   )
 }
