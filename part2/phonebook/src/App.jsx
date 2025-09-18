@@ -71,6 +71,7 @@ const App = () => {
       setsuccessMsg(msjSuccess)
       setTimeout(() => setsuccessMsg(null), 5000)
     }).catch(error => {
+      console.log(error.response.data)
       const msjError = 'Information of this person has already been removed from server'
       setErrorMsg(msjError)
       setTimeout(() => setErrorMsg(null), 5000)
