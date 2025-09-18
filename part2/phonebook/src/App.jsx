@@ -4,6 +4,7 @@ import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import Persons from './components/Persons'
 import Notification from './components/Notification'
+import ErrorNotification from './components/ErrorNotification'
 import './Index.css'
 
 const App = () => {
@@ -13,6 +14,7 @@ const App = () => {
   const [searchField, setSearchField] = useState('')
   const bookFiltered = (searchField == '') ? persons : persons.filter(person => person.name.includes(searchField))
   const [successMsg, setsuccessMsg] = useState(null)
+  const [errorMsg, setErrorMsg] = useState(null)
 
   const addName = (event) => {
     event.preventDefault()
@@ -68,6 +70,10 @@ const App = () => {
       setPersons(persons.filter(pers => pers.id !== id))
       setsuccessMsg(msjSuccess)
       setTimeout(() => setsuccessMsg(null), 5000)
+    }).catch(error => {
+      const msjError = 'Information of this person has already been removed from server'
+      setErrorMsg(msjError)
+      setTimeout(() => setErrorMsg(null), 5000)
     })
   }
 
@@ -82,7 +88,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={successMsg} />
+      <Notification message={successMsg} /> 
+      <ErrorNotification message={errorMsg} />
       <Filter searchField={searchField} hdlSearchFld={handleSearchField}/>
       <PersonForm addName={addName} newName={newName} hdlNameChg={handleNameChange} 
         hdlNumberChg={handleNumberChange} newNumber={newNumber} />
