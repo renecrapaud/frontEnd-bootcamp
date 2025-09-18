@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import phoneBookEntry from './services/phoneBookEntry'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import Persons from './components/Persons'
@@ -22,12 +22,13 @@ const App = () => {
       number: newNumber,
       id: persons.length + 1
     }
-    axios.post('http://localhost:3001/persons', nameObject).then(response => {
-      console.log(response.data)
-      setPersons(persons.concat(nameObject))
-      setNewName('')
-      setNewNumber('')
-    })
+    phoneBookEntry.create(nameObject)
+      .then(response => {
+        console.log(response.data)
+        setPersons(persons.concat(response.data))
+        setNewName('')
+        setNewNumber('')
+      })
   }
 
   const handleNameChange = (event) => {
@@ -43,8 +44,8 @@ const App = () => {
   }
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
+    phoneBookEntry
+      .getAll()
       .then(response => {
         setPersons(response.data)
       })
