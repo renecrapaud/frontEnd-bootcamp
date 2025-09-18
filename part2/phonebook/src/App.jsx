@@ -3,6 +3,8 @@ import phoneBookEntry from './services/phoneBookEntry'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
+import './Index.css'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -10,6 +12,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [searchField, setSearchField] = useState('')
   const bookFiltered = (searchField == '') ? persons : persons.filter(person => person.name.includes(searchField))
+  const [successMsg, setsuccessMsg] = useState(null)
 
   const addName = (event) => {
     event.preventDefault()
@@ -27,6 +30,9 @@ const App = () => {
         phoneBookEntry.update(personReg.id, nameObject)
         .then(response => {
           setPersons(persons.map(person => person.id !== personReg.id ? person : nameObject))
+          const msjSuccess = `${newName} entry updated`
+          setsuccessMsg(msjSuccess)
+          setTimeout(() => setsuccessMsg(null), 5000)
           setNewName('')
           setNewNumber('')
         })
@@ -35,6 +41,9 @@ const App = () => {
       phoneBookEntry.create(nameObject)
       .then(response => {
         setPersons(persons.concat(response.data))
+        const msjSuccess = 'New entry added'
+        setsuccessMsg(msjSuccess)
+        setTimeout(() => setsuccessMsg(null), 5000)
         setNewName('')
         setNewNumber('')
       })
@@ -54,8 +63,12 @@ const App = () => {
   }
 
   const handleClickDelete = (id) => {
-    phoneBookEntry.deleteEntry(id)
-    setPersons(persons.filter(pers => pers.id !== id))
+    phoneBookEntry.deleteEntry(id).then(response => {
+      const msjSuccess = 'Entry deleted'
+      setPersons(persons.filter(pers => pers.id !== id))
+      setsuccessMsg(msjSuccess)
+      setTimeout(() => setsuccessMsg(null), 5000)
+    })
   }
 
   useEffect(() => {
@@ -69,6 +82,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={successMsg} />
       <Filter searchField={searchField} hdlSearchFld={handleSearchField}/>
       <PersonForm addName={addName} newName={newName} hdlNameChg={handleNameChange} 
         hdlNumberChg={handleNumberChange} newNumber={newNumber} />

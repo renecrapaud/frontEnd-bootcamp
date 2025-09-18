@@ -15,13 +15,7 @@ const update = (id, newObject) => {
 }
 
 const deleteEntry = (id) => {
-    console.log(id)
-    return axios.delete(`${baseUrl}/${id}`).then(response => {
-        alert('Entry deleted')
-    }).catch((error)=>{
-        console.log(error)
-        alert('Error while deleting entry')
-    })
+    return axios.delete(`${baseUrl}/${id}`)
 }
 
 export default { getAll, create, update, deleteEntry }
