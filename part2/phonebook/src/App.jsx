@@ -13,22 +13,32 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault()
-    if(persons.map(person => person.name).includes(newName)){
-      alert(`${newName} is already added to phonebook`)
-      return
-    }
     const newId = persons.length + 1
     const nameObject = {
       name: newName,
       number: newNumber,
       id: newId.toString()
     }
-    phoneBookEntry.create(nameObject)
+    const personReg = persons.find(person => person.name === newName)
+    if(personReg && personReg.name===newName){
+      if(!confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
+        return
+      } else {
+        phoneBookEntry.update(personReg.id, nameObject)
+        .then(response => {
+          setPersons(persons.map(person => person.id !== personReg.id ? person : nameObject))
+          setNewName('')
+          setNewNumber('')
+        })
+      }
+    } else {
+      phoneBookEntry.create(nameObject)
       .then(response => {
         setPersons(persons.concat(response.data))
         setNewName('')
         setNewNumber('')
       })
+    }
   }
 
   const handleNameChange = (event) => {
