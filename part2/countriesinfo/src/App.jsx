@@ -50,7 +50,7 @@ function App() {
         <span>Find countries: </span>
         <input type="text" onChange={handleSearchField} />
       </div>
-      {countriesLabel.map(country => <p key={country}> {country} </p> )}
+      {countriesLabel.map(country => <p key={country}> {country} <button onClick={() => searchCountry(country)}>Show</button></p> )}
       
       {country && Object.keys(country).length > 0 && (
         <div>
