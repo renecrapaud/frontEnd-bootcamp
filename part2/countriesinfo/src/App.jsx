@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import WeatherComp from './components/WeatherComp'
 
 function App() {
   const [countriesLabel, setCountriesLabel] = useState(['Type a name'])
@@ -72,6 +73,7 @@ function App() {
             </div>
             {country.flags && <img src={country.flags.png} alt={`Flag of ${country.name?.common}`} width="100" />}
           </div>
+          <WeatherComp countryName={country.name?.common} capital={country.capital?.[0]} />
         </div>
       )}
       
