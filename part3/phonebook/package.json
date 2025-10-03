@@ -1,0 +1,33 @@
+{
+  "name": "phonebook",
+  "version": "1.0.0",
+  "description": "Changing backend for phonebook app",
+  "keywords": [
+    "backend",
+    "phonebook",
+    "node"
+  ],
+  "homepage": "https://github.com/renecrapaud/frontEnd-bootcamp#readme",
+  "bugs": {
+    "url": "https://github.com/renecrapaud/frontEnd-bootcamp/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/renecrapaud/frontEnd-bootcamp.git"
+  },
+  "license": "ISC",
+  "author": "Rene",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
