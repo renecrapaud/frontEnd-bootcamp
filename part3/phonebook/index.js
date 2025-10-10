@@ -57,13 +57,20 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 app.post('/api/persons/', (request, response) => {
-  const newId = Math.floor(Math.random() * 50000)
   const body = request.body
   if(!body?.name || !body?.number){
     return response.status(400).json({
-      error: 'Invalid data'
+      error: 'Missing data in request'
     })
   }
+  
+  if(entries.find(reg => reg.name === body.name)){
+    return response.status(400).json({
+      error: 'Name must be unique'
+    })
+  }
+  const newId = Math.floor(Math.random() * 50000)
+
   const newEntry = {
     id: newId,
     name: body.name,
