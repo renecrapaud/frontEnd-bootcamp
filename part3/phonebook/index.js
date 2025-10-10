@@ -42,11 +42,18 @@ app.get('/api/persons/:id', (request,response) => {
         response.json(personReg)
     } else {
         response.status(400).json({ 
-          error: 'content missing' 
+          error: 'content missing'
         })
     }
 
 })
+
+app.delete('/api/persons/:id', (request, response) => {
+  const idtoGet = Number(request.params.id)
+  entries = entries.filter(reg => reg.id !== idtoGet)
+  response.status(204).end()
+})
+
 const PORT = 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
