@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 
+app.use(express.json())
+
 let entries = [
     { 
       "id": 1,
@@ -52,6 +54,24 @@ app.delete('/api/persons/:id', (request, response) => {
   const idtoGet = Number(request.params.id)
   entries = entries.filter(reg => reg.id !== idtoGet)
   response.status(204).end()
+})
+
+app.post('/api/persons/', (request, response) => {
+  const newId = Math.floor(Math.random() * 50000)
+  const body = request.body
+  if(!body?.name || !body?.number){
+    return response.status(400).json({
+      error: 'Invalid data'
+    })
+  }
+  const newEntry = {
+    id: newId,
+    name: body.name,
+    number: body.number
+  }
+  entries = entries.concat(newEntry)
+  response.json(newEntry)
+
 })
 
 const PORT = 3001
