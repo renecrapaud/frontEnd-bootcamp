@@ -47,6 +47,7 @@ let entries = [
 
 app.get("/api/persons", (request, response) => {
   Person.find({}).then((persons) => {
+    entries = persons;
     response.json(persons);
   });
 });
@@ -91,13 +92,19 @@ app.post("/api/persons/", (request, response) => {
   }
   const newId = Math.floor(Math.random() * 50000);
 
-  const newEntry = {
+  const newEntry = new Person({
     id: newId,
     name: body.name,
     number: body.number,
-  };
-  entries = entries.concat(newEntry);
-  response.json(newEntry);
+  });
+
+  newEntry.save().then((result) => {
+    entries = entries.concat(newEntry);
+    console.log(
+      `added ${newEntry.name} number ${newEntry.number} to phonebook`,
+    );
+    response.json(newEntry);
+  });
 });
 
 const PORT = process.env.PORT;
