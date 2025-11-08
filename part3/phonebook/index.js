@@ -72,7 +72,6 @@ app.post("/api/persons/", (request, response) => {
       error: "Name must be unique",
     });
   }
-  const newId = Math.floor(Math.random() * 50000);
 
   const newEntry = new Person({
     name: body.name,
@@ -85,6 +84,24 @@ app.post("/api/persons/", (request, response) => {
     );
     response.json(newEntry);
   });
+});
+
+app.put("/api/persons/:id", (request, response, next) => {
+  const body = request.body;
+  if (!body?.name || !body?.number) {
+    return response.status(400).json({
+      error: "Missing data in request",
+    });
+  }
+  const newEntry = {
+    name: body.name,
+    number: body.number
+  }
+  Person.findByIdAndUpdate(request.params.id, newEntry, { new: true })
+    .then(updatedEntry => {
+      response.json(updatedEntry)
+    })
+    .catch(error => { next(error) })
 });
 
 const errorHandler = (error, request, response, next) => {
