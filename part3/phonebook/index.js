@@ -75,7 +75,6 @@ app.post("/api/persons/", (request, response) => {
   const newId = Math.floor(Math.random() * 50000);
 
   const newEntry = new Person({
-    //id: newId,
     name: body.name,
     number: body.number,
   });
