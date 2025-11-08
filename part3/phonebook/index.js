@@ -10,10 +10,10 @@ app.use(express.static("dist"));
 app.use(express.json());
 app.use(cors());
 
-morgan.token("namereq", function (req, res) {
+morgan.token("namereq", function (req) {
   return req.body && req.body.name ? req.body.name : "-";
 });
-morgan.token("number", function (req, res) {
+morgan.token("number", function (req) {
   return req.body && req.body.number ? req.body.number : "-";
 });
 app.use(
@@ -41,7 +41,7 @@ app.get("/info", (request, response) => {
 
 });
 
-app.get("/api/persons/:id", (request, response) => {
+app.get("/api/persons/:id", (request, response, next) => {
   Person.findById(request.params.id).then(person => {
     if (person) {
       response.json(person);
@@ -54,7 +54,7 @@ app.get("/api/persons/:id", (request, response) => {
 app.delete("/api/persons/:id", (request, response, next) => {
   const idtoGet = request.params.id;
   Person.findByIdAndDelete(idtoGet)
-    .then((result) => {
+    .then(() => {
       entries = entries.filter((reg) => reg._id.toString() !== idtoGet);
       response.status(204).end();
     })
@@ -78,7 +78,7 @@ app.post("/api/persons/", (request, response, next) => {
     name: body.name,
     number: body.number,
   });
-  newEntry.save().then((result) => {
+  newEntry.save().then(() => {
     entries = entries.concat(newEntry);
     console.log(
       `added ${newEntry.name} number ${newEntry.number} to phonebook`,
