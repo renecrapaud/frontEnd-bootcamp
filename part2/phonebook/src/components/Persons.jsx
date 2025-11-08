@@ -1,4 +1,3 @@
-import deleteEntry from "../services/phoneBookEntry"
 const Persons = ({personsFiltered, hdlClickDel}) => {
 
     const clickDelete = (event) => {

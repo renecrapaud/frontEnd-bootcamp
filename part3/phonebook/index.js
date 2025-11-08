@@ -22,28 +22,7 @@ app.use(
   ),
 );
 
-let entries = [
-  {
-    id: 1,
-    name: "Arto Hellas",
-    number: "040-123456",
-  },
-  {
-    id: 2,
-    name: "Ada Lovelace",
-    number: "39-44-5323523",
-  },
-  {
-    id: 3,
-    name: "Dan Abramov",
-    number: "12-43-234345",
-  },
-  {
-    id: 4,
-    name: "Mary Poppendieck",
-    number: "39-23-6423122",
-  },
-];
+let entries = [];
 
 app.get("/api/persons", (request, response) => {
   Person.find({}).then((persons) => {
@@ -71,10 +50,14 @@ app.get("/api/persons/:id", (request, response) => {
   }
 });
 
-app.delete("/api/persons/:id", (request, response) => {
-  const idtoGet = Number(request.params.id);
-  entries = entries.filter((reg) => reg.id !== idtoGet);
-  response.status(204).end();
+app.delete("/api/persons/:id", (request, response, next) => {
+  const idtoGet = request.params.id;
+  Person.findByIdAndDelete(idtoGet)
+    .then((result) => {
+      entries = entries.filter((reg) => reg._id.toString() !== idtoGet);
+      response.status(204).end();
+    })
+    .catch((error) => next(error));
 });
 
 app.post("/api/persons/", (request, response) => {
@@ -84,7 +67,6 @@ app.post("/api/persons/", (request, response) => {
       error: "Missing data in request",
     });
   }
-
   if (entries.find((reg) => reg.name === body.name)) {
     return response.status(400).json({
       error: "Name must be unique",
@@ -93,11 +75,10 @@ app.post("/api/persons/", (request, response) => {
   const newId = Math.floor(Math.random() * 50000);
 
   const newEntry = new Person({
-    id: newId,
+    //id: newId,
     name: body.name,
     number: body.number,
   });
-
   newEntry.save().then((result) => {
     entries = entries.concat(newEntry);
     console.log(
@@ -107,6 +88,17 @@ app.post("/api/persons/", (request, response) => {
   });
 });
 
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message);
+  if (error.name === "CastError") {
+    return response.status(400).send({
+      error: "malformatted id",
+    });
+  }
+  next(error);
+};
+
+app.use(errorHandler);
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

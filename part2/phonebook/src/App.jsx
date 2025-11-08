@@ -78,7 +78,7 @@ const App = () => {
       .deleteEntry(id)
       .then((response) => {
         const msjSuccess = "Entry deleted";
-        setPersons(persons.filter((pers) => pers.id !== Number(id)));
+        setPersons(persons.filter((pers) => pers.id !== id.toString()));
         setsuccessMsg(msjSuccess);
         setTimeout(() => setsuccessMsg(null), 5000);
       })
