@@ -32,22 +32,23 @@ app.get("/api/persons", (request, response) => {
 });
 
 app.get("/info", (request, response) => {
-  const bookEntries = entries.length;
-  const dateNow = new Date();
-  const infoTxt = `<p>Phone book has info for ${bookEntries} people <br/> ${dateNow.toString()}</p>`;
-  response.send(infoTxt);
+  Person.find({}).then((persons) => {
+    const bookEntries = persons.length;
+    const dateNow = new Date();
+    const infoTxt = `<p>Phone book has info for ${bookEntries} people <br/> ${dateNow.toString()}</p>`;
+    response.send(infoTxt);
+  });
+
 });
 
 app.get("/api/persons/:id", (request, response) => {
-  const idtoGet = Number(request.params.id);
-  const personReg = entries.find((reg) => reg.id === idtoGet);
-  if (personReg) {
-    response.json(personReg);
-  } else {
-    response.status(400).json({
-      error: "content missing",
-    });
-  }
+  Person.findById(request.params.id).then(person => {
+    if (person) {
+      response.json(person);
+    } else {
+      response.status(404).end();
+    }
+  }).catch(error => next(error))
 });
 
 app.delete("/api/persons/:id", (request, response, next) => {
