@@ -50,6 +50,11 @@ test('There number of blogs in DB match with test set', async () =>{
   assert.strictEqual(response.body.length, iniBlogList.length)
 })
 
+test('The identifier field name is id', async () =>{
+  const response = await api.get('/api/blogs')
+  assert(response.body[0].id)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
