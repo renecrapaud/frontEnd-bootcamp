@@ -1,7 +1,6 @@
 const blogsRouter = require('express').Router()
-const blogSchema = require('../models/blog')
+const Blog = require('../models/blog')
 const mongoose = require('mongoose')
-const Blog = mongoose.model('Blog', blogSchema)
 const express = require('express')
 const app = express()
 const logger = require('../utils/logger')
