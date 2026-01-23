@@ -1,4 +1,4 @@
-const {test, after, beforeEach } = require('node:test')
+const {test, after, beforeEach, describe } = require('node:test')
 const assert = require('node:assert')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
@@ -106,6 +106,16 @@ test('In required fields, return bad request', async () => {
     .post('/api/blogs')
     .send(newBlogEntrance2)
     .expect(400)
+})
+
+describe('deletion of a blog entrance', () => {
+  test('Succeeds with status 204', async () => {
+    const response = await api.get('/api/blogs')
+    const idToDel = response.body[0].id
+    assert(idToDel)
+    await api.delete(`/api/blogs/${idToDel}`)
+      .expect(204)
+  })
 })
 
 after(async () => {
