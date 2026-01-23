@@ -61,7 +61,7 @@ test('A valid blog antrance can be aded', async () =>{
       title: 'JavaScript is the main web language',
       author: 'Ada Lovelace',
       url: 'https://homepages.cwi.nl/~storm/teaching/reader/Lovelace123.pdf',
-      likes: 3,
+      likes: 3
     }
   await  api
   .post('/api/blogs')
@@ -74,6 +74,26 @@ test('A valid blog antrance can be aded', async () =>{
   const contents = response.body.map(r => r.title)
   assert.strictEqual(response.body.length, iniBlogList.length + 1)
   assert(contents.includes('JavaScript is the main web language'))
+})
+
+test('When likes property does not have a value set it to zero', async () => {
+  const newBlogEntrance1 =
+    {
+      title: 'PHP is the main web language',
+      author: 'Dan Abramov',
+      url: 'https://homepages.cwi.nl/~storm/teaching/reader/Abramov456.pdf'
+    }
+  await  api
+  .post('/api/blogs')
+    .send(newBlogEntrance1)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const response = await api.get('/api/blogs')
+
+  const contents = response.body.map(r => r.likes)
+  assert.strictEqual(response.body.length, iniBlogList.length + 1)
+  assert(contents.includes(0))
 })
 
 after(async () => {
