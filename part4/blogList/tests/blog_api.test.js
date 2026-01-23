@@ -55,6 +55,27 @@ test('The identifier field name is id', async () =>{
   assert(response.body[0].id)
 })
 
+test('A valid blog antrance can be aded', async () =>{
+  const newBlogEntrance =
+    {
+      title: 'JavaScript is the main web language',
+      author: 'Ada Lovelace',
+      url: 'https://homepages.cwi.nl/~storm/teaching/reader/Lovelace123.pdf',
+      likes: 3,
+    }
+  await  api
+  .post('/api/blogs')
+    .send(newBlogEntrance)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const response = await api.get('/api/blogs')
+
+  const contents = response.body.map(r => r.title)
+  assert.strictEqual(response.body.length, iniBlogList.length + 1)
+  assert(contents.includes('JavaScript is the main web language'))
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
