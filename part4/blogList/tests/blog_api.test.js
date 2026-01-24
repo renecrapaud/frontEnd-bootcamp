@@ -118,6 +118,15 @@ describe('deletion of a blog entrance', () => {
   })
 })
 
+test('Update succeeds with valid id', async () => {
+  const response = await api.get('/api/blogs')
+  const idToUdt = response.body[0].id
+  assert(idToUdt)
+  await api.put(`/api/blogs/${idToUdt}`)
+    .send({likes: 9})
+    .expect(202)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
