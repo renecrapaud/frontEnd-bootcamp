@@ -21,14 +21,14 @@ const iniBlogList = [
     likes: 3,
   },
   {
-    title: 'New blog record',
-    author: 'the old one',
+    title: 'World cup',
+    author: 'chicharito',
     url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
     likes: 9,
   }
 ]
 
-beforeEach(async () =>{
+beforeEach(async () => {
   await Blog.deleteMany({})
   let blogObject = new Blog(iniBlogList[0])
   await blogObject.save()
@@ -38,33 +38,33 @@ beforeEach(async () =>{
   await blogObject.save()
 })
 
-test('blogs are returned as JSON', async () =>{
+test('blogs are returned as JSON', async () => {
   await api
     .get('/api/blogs')
     .expect(200)
     .expect('Content-Type', /application\/json/)
 })
 
-test('There number of blogs in DB match with test set', async () =>{
+test('There number of blogs in DB match with test set', async () => {
   const response = await api.get('/api/blogs')
   assert.strictEqual(response.body.length, iniBlogList.length)
 })
 
-test('The identifier field name is id', async () =>{
+test('The identifier field name is id', async () => {
   const response = await api.get('/api/blogs')
   assert(response.body[0].id)
 })
 
-test('A valid blog antrance can be aded', async () =>{
+test('A valid blog antrance can be aded', async () => {
   const newBlogEntrance =
-    {
-      title: 'JavaScript is the main web language',
-      author: 'Ada Lovelace',
-      url: 'https://homepages.cwi.nl/~storm/teaching/reader/Lovelace123.pdf',
-      likes: 3
-    }
-  await  api
-  .post('/api/blogs')
+  {
+    title: 'JavaScript is the main web language',
+    author: 'Ada Lovelace',
+    url: 'https://homepages.cwi.nl/~storm/teaching/reader/Lovelace123.pdf',
+    likes: 3
+  }
+  await api
+    .post('/api/blogs')
     .send(newBlogEntrance)
     .expect(201)
     .expect('Content-Type', /application\/json/)
@@ -78,13 +78,14 @@ test('A valid blog antrance can be aded', async () =>{
 
 test('When likes property does not have a value, set it to zero', async () => {
   const newBlogEntrance1 =
-    {
-      title: 'PHP is the main web language',
-      author: 'Dan Abramov',
-      url: 'https://homepages.cwi.nl/~storm/teaching/reader/Abramov456.pdf'
-    }
-  await  api
-  .post('/api/blogs')
+  {
+    title: 'PHP is the main web language',
+    author: 'Dan Abramov',
+    url: 'https://homepages.cwi.nl/~storm/teaching/reader/Abramov456.pdf',
+    user: 'usr'
+  }
+  await api
+    .post('/api/blogs')
     .send(newBlogEntrance1)
     .expect(201)
     .expect('Content-Type', /application\/json/)
@@ -98,10 +99,10 @@ test('When likes property does not have a value, set it to zero', async () => {
 
 test('In required fields, return bad request', async () => {
   const newBlogEntrance2 =
-    {
-      author: 'Dan Abramov',
-      url: 'https://homepages.cwi.nl/~storm/teaching/reader/Abramov456.pdf'
-    }
+  {
+    author: 'Dan Abramov',
+    url: 'https://homepages.cwi.nl/~storm/teaching/reader/Abramov456.pdf'
+  }
   await api
     .post('/api/blogs')
     .send(newBlogEntrance2)
@@ -123,7 +124,7 @@ test('Update succeeds with valid id', async () => {
   const idToUdt = response.body[0].id
   assert(idToUdt)
   await api.put(`/api/blogs/${idToUdt}`)
-    .send({likes: 9})
+    .send({ likes: 9 })
     .expect(202)
 })
 
