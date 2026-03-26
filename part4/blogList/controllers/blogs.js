@@ -22,17 +22,26 @@ blogsRouter.post('/', async (request, response) => {
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' })
   }
-  const user = await User.findById(decodedToken.id)
-  request.body.user = user._doc._id
+  request.body.user = decodedToken.id
   const blog = new Blog(request.body)
   const savedBlog = await blog.save()
   response.status(201).json(savedBlog)
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
   const id = request.params.id
-  await Blog.findByIdAndDelete(id)
-  response.status(204).end()
+  const blog = await Blog.findById(id)
+  const blogUsrId = blog._doc.user
+  if (decodedToken.id.toString() === blogUsrId.toString()) {
+    await Blog.findByIdAndDelete(id)
+    response.status(204).end()
+  } else {
+    return response.status(401).json({ error: 'user not allowed' })
+  }
 })
 
 blogsRouter.put('/:id', async (request, response) => {
