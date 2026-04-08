@@ -118,8 +118,8 @@ describe('most popular blog', () => {
     const result = listHelper.favoriteBlog(listWithOneBlog)
     assert.deepStrictEqual(result, blog)
   })
-  test('aux func successfuly returns author with most blogs', () => {
-    const listWithBlogs = [
+
+  const listWithBlogs = [
       {
         _id: '5a422aa71b54a676234d17f8',
         title: 'Go To Statement Considered Harmful',
@@ -153,7 +153,16 @@ describe('most popular blog', () => {
         __v: 0
       }
     ]
+
+  test('aux func successfuly returns author with most blogs', () => {
+    
     const result = listHelper.mostBlogs(listWithBlogs)
     assert.deepStrictEqual(result, { author: 'my favorite author', blogs: 2 })
+  })
+
+  test('aux func successfuly returns author with most likes', () => {
+    
+    const result = listHelper.mostLikes(listWithBlogs)
+    assert.deepStrictEqual(result, { author: 'my favorite author', likes: 10 })
   })
 })
