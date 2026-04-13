@@ -10,6 +10,7 @@ const LoginForm = ({ setErrorMessage, setUsr }) => {
     try {
       const user = await loginService.login({ username, password, })
       setUsr(user)
+      window.localStorage.setItem('user', JSON.stringify(user))
       setUsername('')
       setPassword('')
 
