@@ -4,6 +4,7 @@ import blogService from './services/blogs'
 import ErrorNotification from './components/ErrorNotification'
 import "./Index.css";
 import LoginForm from './components/LoginForm'
+import AddForm from './components/addForm';
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -21,12 +22,14 @@ const App = () => {
     if (loggedUsr) {
       const user = JSON.parse(loggedUsr)
       setUser(user)
+      blogService.setToken(user.token)
     }
   }, [])
 
   const doLogout = () => {
     window.localStorage.removeItem('user')
     setUser(null)
+    blogService.setToken(null)
   }
 
   if (user === null) {
@@ -41,10 +44,13 @@ const App = () => {
     return (
       <div>
         <h2>Blogs</h2>
+        <ErrorNotification message={errorMsg} />
         <h4>
           {user.username} logged in
           <span> </span>
           <button onClick={doLogout}>Logout</button>
+          <br />
+          <AddForm setErrorMessage={setErrorMsg} setBlogs={setBlogs} blogsBef={blogs} />
         </h4>
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} />
