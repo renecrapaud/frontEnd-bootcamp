@@ -1,8 +1,7 @@
 import { useState } from "react"
 import blogs from "../services/blogs"
-import Blog from "./Blog"
 
-const AddForm = ({ setErrorMessage, setBlogs, blogsBef }) => {
+const AddForm = ({ setErrorMessage, setBlogs, blogsBef, setMsg }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -16,9 +15,12 @@ const AddForm = ({ setErrorMessage, setBlogs, blogsBef }) => {
       setUrl('')
       const newBlog = { title: resp.title, author: resp.author, url: resp.url, id: resp.id }
       setBlogs(blogsBef.concat(newBlog))
+      setMsg('List Entry added successfully')
+      setTimeout(() => {
+        setMsg(null)
+      }, 5000)
     } catch (exception) {
-      console.log(exception)
-      setErrorMessage(`Error saving data`)
+      setErrorMessage(`Error saving data: ${exception.message}`)
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
