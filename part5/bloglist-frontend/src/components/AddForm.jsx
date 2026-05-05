@@ -1,7 +1,7 @@
 import { useState } from "react"
 import blogs from "../services/blogs"
 
-const AddForm = ({ setErrorMessage, setBlogs, blogsBef, setMsg }) => {
+const AddForm = ({ setErrorMessage, setBlogs, blogsBef, setMsg, blogFormRef }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -16,6 +16,7 @@ const AddForm = ({ setErrorMessage, setBlogs, blogsBef, setMsg }) => {
       const newBlog = { title: resp.title, author: resp.author, url: resp.url, id: resp.id }
       setBlogs(blogsBef.concat(newBlog))
       setMsg('List Entry added successfully')
+      blogFormRef.current.toggleVisibility()
       setTimeout(() => {
         setMsg(null)
       }, 5000)

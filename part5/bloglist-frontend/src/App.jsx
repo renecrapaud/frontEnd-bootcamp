@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import ErrorNotification from './components/ErrorNotification'
@@ -6,13 +6,14 @@ import "./Index.css";
 import LoginForm from './components/LoginForm'
 import AddForm from './components/AddForm';
 import Notification from './components/Notification';
+import Togglable from './components/Togglable';
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [errorMsg, setErrorMsg] = useState(null)
   const [msg, setMsg] = useState(null)
-
+  const blogFormReg = useRef()
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
@@ -53,7 +54,9 @@ const App = () => {
           <span> </span>
           <button onClick={doLogout}>Logout</button>
           <br />
-          <AddForm setErrorMessage={setErrorMsg} setBlogs={setBlogs} blogsBef={blogs} setMsg={setMsg}/>
+          <Togglable buttonLabel="New Entry" ref={blogFormReg}>
+            <AddForm setErrorMessage={setErrorMsg} setBlogs={setBlogs} blogsBef={blogs} setMsg={setMsg} blogFormRef={blogFormReg} />
+          </Togglable>
         </h4>
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} />
