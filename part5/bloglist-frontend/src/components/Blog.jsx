@@ -17,6 +17,7 @@ const Blog = ({ blog }) => {
 
   const sendLike = () => {
     setLikes(likes + 1)
+    blog.likes += 1
     blogs.updateLike(blog)
   }
 

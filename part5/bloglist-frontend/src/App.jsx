@@ -15,9 +15,18 @@ const App = () => {
   const [msg, setMsg] = useState(null)
   const blogFormReg = useRef()
   useEffect(() => {
-    blogService.getAll().then(blogs =>
+    blogService.getAll().then(blogs => {
+      blogs.sort(function (a, b) {
+        if (a.likes > b.likes) {
+          return 1
+        }
+        if (a.likes < b.likes) {
+          return -1
+        }
+        return 0
+      })
       setBlogs(blogs)
-    )
+    })
   }, [])
 
   useEffect(() => {
