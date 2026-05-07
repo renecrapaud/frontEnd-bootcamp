@@ -1,9 +1,10 @@
 import { useState } from "react"
 import blogs from "../services/blogs"
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, setErrorMessage, setMsg }) => {
   const [likes, setLikes] = useState(blog.likes)
   const [visible, setVisible] = useState(false)
+  const [deleted, setDeleted] = useState(false)
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -21,23 +22,47 @@ const Blog = ({ blog }) => {
     blogs.updateLike(blog)
   }
 
-  if (visible) {
-    return (
-      <div style={blogStyle}>
-        {blog.title} <button onClick={toggleDetails}>hide</button> <br />
-        {blog.url} <br />
-        Likes {likes} <button onClick={sendLike}>Like</button> <br />
-        {blog.author}
+  const reqDelete = async () => {
+    if (confirm(`Remove ${blog.title} by ${blog.author}?`)) {
+      try {
+        const resp = await blogs.sendDeletionReq(blog.id)
+        setMsg('List Entry deleted successfully')
+        setDeleted(true)
+        setTimeout(() => {
+          setMsg(null)
+        }, 5000)
+      } catch (exception) {
+        setErrorMessage(`Error Deleting entry: ${exception.message}`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      }
+    }
+    else {
+      console.log("Deletion canceled")
+    }
 
-      </div>
-    )
-  } else {
-    return (
-      <div style={blogStyle}>
-        {blog.title} {blog.author}
-        <button onClick={toggleDetails}>View</button>
-      </div>
-    )
+  }
+  if (!deleted) {
+    if (visible) {
+      return (
+        <div style={blogStyle}>
+          {blog.title} <button onClick={toggleDetails}>hide</button> <br />
+          {blog.url} <br />
+          Likes {likes} <button onClick={sendLike}>Like</button> <br />
+          {blog.author}
+          <br />
+          <button onClick={reqDelete}>Remove</button>
+        </div>
+      )
+    } else {
+      return (
+        <div style={blogStyle}>
+          {blog.title} {blog.author}
+          <button onClick={toggleDetails}>View</button>
+        </div>
+      )
+    }
   }
 }
 export default Blog
