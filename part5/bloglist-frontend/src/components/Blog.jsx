@@ -1,5 +1,5 @@
-import { useState } from "react"
-import blogs from "../services/blogs"
+import { useState } from 'react'
+import blogs from '../services/blogs'
 
 const Blog = ({ blog, setErrorMessage, setMsg }) => {
   const [likes, setLikes] = useState(blog.likes)
@@ -25,7 +25,7 @@ const Blog = ({ blog, setErrorMessage, setMsg }) => {
   const reqDelete = async () => {
     if (confirm(`Remove ${blog.title} by ${blog.author}?`)) {
       try {
-        const resp = await blogs.sendDeletionReq(blog.id)
+        await blogs.sendDeletionReq(blog.id)
         setMsg('List Entry deleted successfully')
         setDeleted(true)
         setTimeout(() => {
@@ -39,7 +39,7 @@ const Blog = ({ blog, setErrorMessage, setMsg }) => {
       }
     }
     else {
-      console.log("Deletion canceled")
+      console.log('Deletion canceled')
     }
 
   }
