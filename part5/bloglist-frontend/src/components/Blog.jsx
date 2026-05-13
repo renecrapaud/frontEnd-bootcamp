@@ -47,10 +47,10 @@ const Blog = ({ blog, setErrorMessage, setMsg }) => {
     if (visible) {
       return (
         <div style={blogStyle}>
-          {blog.title} <button onClick={toggleDetails}>hide</button> <br />
-          {blog.url} <br />
-          Likes {likes} <button onClick={sendLike}>Like</button> <br />
-          {blog.author}
+          <span id='blog-title'>{blog.title}</span> <button onClick={toggleDetails}>hide</button> <br />
+          <span id='blog-url'>{blog.url}</span> <br />
+          <span id='blog-likes'>Likes {likes} </span> <button onClick={sendLike}>Like</button> <br />
+          <span id='blog-author'>{blog.author} </span>
           <br />
           <button onClick={reqDelete}>Remove</button>
         </div>
@@ -58,7 +58,8 @@ const Blog = ({ blog, setErrorMessage, setMsg }) => {
     } else {
       return (
         <div style={blogStyle}>
-          {blog.title} {blog.author}
+          <span id='blog-title'>{blog.title}</span>
+          <span id='blog-url'>{blog.url}</span>
           <button onClick={toggleDetails}>View</button>
         </div>
       )
