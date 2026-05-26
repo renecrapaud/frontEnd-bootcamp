@@ -33,6 +33,7 @@ const LoginForm = ({ setErrorMessage, setUsr }) => {
           type="text"
           value={username}
           name="Username"
+          data-testid='username'
           onChange={({ target }) => setUsername(target.value)}
         />
         <br />
@@ -41,6 +42,7 @@ const LoginForm = ({ setErrorMessage, setUsr }) => {
           type="password"
           value={password}
           name="Password"
+          data-testid='password'
           onChange={({ target }) => setPassword(target.value)}
         />
         <br />
