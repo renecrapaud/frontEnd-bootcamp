@@ -34,4 +34,24 @@ test.describe('Blog app', () => {
       await expect(page.getByText('Wrong credentials')).toBeVisible()
     })
   })
+
+  test.describe('When logged in', () => {
+    test.beforeEach(async ({ page, request }) => {
+      await request.post('http://localhost:3003/api/testing/reset-blog')
+      await page.goto('http://localhost:5173')
+      await page.getByTestId('username').fill('mluukkai')
+      await page.getByTestId('password').fill('salainen')
+      await page.getByRole('button', { name: 'login' }).click()
+      await expect(page.getByText('Blogs')).toBeVisible()
+    })
+
+    test('A new blog can be created', async ({ page }) => {
+      await page.getByText('New Entry').click()
+      await page.getByTestId('Title').fill('New amazing entry blog')
+      await page.getByTestId('Author').fill('Ghost writer')
+      await page.getByTestId('Url').fill('myawesomeurl.net')
+      await page.getByText('Create').click()
+      await expect(page.getByText('New amazing entry blog')).toBeVisible()
+    })
+  })
 })

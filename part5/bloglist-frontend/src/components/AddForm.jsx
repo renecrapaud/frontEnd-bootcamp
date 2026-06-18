@@ -35,6 +35,7 @@ const AddForm = ({ setErrorMessage, setBlogs, blogsBef, setMsg, blogFormRef }) =
         <input
           type="text"
           name="Title"
+          data-testid="Title"
           value={title}
           onChange={({ target }) => setTitle(target.value)}
         />
@@ -43,6 +44,7 @@ const AddForm = ({ setErrorMessage, setBlogs, blogsBef, setMsg, blogFormRef }) =
         <input
           type="text"
           name="Author"
+          data-testid="Author"
           value={author}
           onChange={({ target }) => setAuthor(target.value)}
         />
@@ -51,6 +53,7 @@ const AddForm = ({ setErrorMessage, setBlogs, blogsBef, setMsg, blogFormRef }) =
         <input
           type="text"
           name="Url"
+          data-testid="Url"
           value={url}
           onChange={({ target }) => setUrl(target.value)}
         />
