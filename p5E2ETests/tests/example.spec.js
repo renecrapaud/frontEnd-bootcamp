@@ -1,12 +1,26 @@
 // @ts-check
 import { test, expect } from "@playwright/test";
 
+/**
+ * Logs into the application page.
+ * @param {import('@playwright/test').Page} page - The Playwright Page object.
+ * @param {string} username - The username to log in with.
+ * @param {string} password - The password for login.
+ * */
 const loginWith = async (page, username, password) => {
   await page.getByTestId("username").fill(username);
   await page.getByTestId("password").fill(password);
   await page.getByRole("button", { name: "login" }).click();
 };
 
+/**
+ *
+ * Fills and submits a new blog entry.
+ * @param {import('@playwright/test').Page} page - The Playwright Page object.
+ * @param {string} title - The title of the entry.
+ * @param {string} author - The author of the entry.
+ * @param {string} url - The URL associated with the entry.
+ */
 const fillEntry = async (page, title, author, url) => {
   await page.getByText("New Entry").click();
   await page.getByTestId("Title").fill(title);
@@ -85,6 +99,21 @@ test.describe("Blog app Login", () => {
       await page.getByRole("button", { name: "Like" }).click();
       const likesText = page.getByText("Likes 1");
       await expect(likesText).toBeVisible();
+    });
+
+    test("An existing blog can be deleted", async ({ page }) => {
+      await page.getByRole("button", { name: "View" }).click();
+      page.on("dialog", async (dialog) => {
+        expect(dialog.type()).toContain("confirm");
+        expect(dialog.message()).toBe(
+          "Remove New amazing entry blog by Ghost writer?",
+        );
+        await dialog.accept();
+      });
+      await page.getByRole("button", { name: "Remove" }).click();
+      await expect(
+        page.getByText("List Entry deleted successfully"),
+      ).toBeVisible();
     });
   });
 });
