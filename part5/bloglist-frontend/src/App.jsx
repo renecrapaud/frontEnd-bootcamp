@@ -17,10 +17,10 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then((blogs) => {
       blogs.sort(function (a, b) {
-        if (a.likes > b.likes) {
+        if (a.likes < b.likes) {
           return 1;
         }
-        if (a.likes < b.likes) {
+        if (a.likes > b.likes) {
           return -1;
         }
         return 0;
@@ -76,6 +76,7 @@ const App = () => {
           <Blog
             key={blog.id}
             blog={blog}
+            setBlogs={setBlogs}
             setErrorMessage={setErrorMsg}
             setMsg={setMsg}
           />

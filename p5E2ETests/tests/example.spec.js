@@ -35,12 +35,7 @@ test.describe("Blog app Login", () => {
     });
 
     test("A new blog can be created", async ({ page }) => {
-      await fillEntry(
-        page,
-        "New amazing entry blog",
-        "Ghost writer",
-        "myawesomeurl.net",
-      );
+      await fillEntry(page,"New amazing entry blog","Ghost writer","myawesomeurl.net");
       await expect(page.getByText("New amazing entry blog")).toBeVisible();
     });
   });
@@ -53,12 +48,7 @@ test.describe("Blog app Login", () => {
       await loginWith(page, "mluukkai", "salainen");
       await expect(page.getByText("Blogs")).toBeVisible();
 
-      await fillEntry(
-        page,
-        "New amazing entry blog",
-        "Ghost writer",
-        "myawesomeurl.net",
-      );
+      await fillEntry(page, "New amazing entry blog", "Ghost writer", "myawesomeurl.net");
       await expect(page.getByText("New amazing entry blog")).toBeVisible();
     });
 
@@ -95,6 +85,18 @@ test.describe("Blog app Login", () => {
       await expect(
         page.getByText("Error Deleting entry: Request failed with status code 401"),
       ).toBeVisible();
+    });
+
+    test("Entry blogs are listed in descending order by likes", async ({ page }) => {
+      await fillEntry(page, "New entry, more likes", "author", "url.url");
+      await expect(page.getByText("New entry, more likes")).toBeVisible();
+      let viewArrayBefore = await page.getByRole("button", { name: "View" }).all();
+      await viewArrayBefore[1].click();
+      let likeButton = page.getByRole("button", { name: "Like" });
+      await likeButton.click();
+      await likeButton.click();
+      let likeArray = await page.getByRole("button", { name: "Like" }).all();
+      expect(likeArray[0].locator('..')).toContainText("Likes 2");
     });
   });
 });

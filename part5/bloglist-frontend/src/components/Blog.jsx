@@ -1,7 +1,7 @@
 import { useState } from "react";
 import blogs from "../services/blogs";
 
-const Blog = ({ blog, setErrorMessage, setMsg }) => {
+const Blog = ({ blog, setBlogs, setErrorMessage, setMsg }) => {
   let likesNum = parseInt(blog.likes) || 0;
   const [likes, setLikes] = useState(likesNum);
   const [visible, setVisible] = useState(false);
@@ -17,10 +17,12 @@ const Blog = ({ blog, setErrorMessage, setMsg }) => {
     setVisible(!visible);
   };
 
-  const sendLike = () => {
+  const sendLike = async () => {
     setLikes(likes + 1);
     blog.likes += 1;
     blogs.updateLike(blog);
+    let blogsArray = await blogs.getAll()
+    setBlogs(blogsArray.sort((a, b) => b.likes - a.likes))
   };
 
   const reqDelete = async () => {
