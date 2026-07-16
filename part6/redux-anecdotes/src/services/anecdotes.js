@@ -10,4 +10,19 @@ const getAll = async () => {
   return await response.json()
 }
 
-export default { getAll }
+const createNew = async (content) => {
+  const options = {
+    method: 'POST',
+    headers: { 'Content-type': 'application/json' },
+    body: JSON.stringify({ content, votes: 0 })
+  }
+  const response = await fetch(baseUrl, options)
+
+  if (!response.ok) {
+    throw new Error('Failed to add anecdote to data base')
+  }
+
+  return await response.json()
+}
+
+export default { getAll, createNew }
