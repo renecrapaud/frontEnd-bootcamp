@@ -18,7 +18,7 @@ const AnecdoteList = () => {
   const vote = id => {
     let entryToUpdate = anecdotes.find(a => a.id === id)
     dispatch(updateVote({ ...entryToUpdate, votes: entryToUpdate.votes + 1 }))
-    dispatch(showNotification(`Vote added to:  ${entryToUpdate.content}`))
+    dispatch(showNotification(`Vote added to:  ${entryToUpdate.content}`, 5))
   }
 
   return (
