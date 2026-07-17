@@ -7,3 +7,19 @@ export const getAnecdotes = async () => {
   }
   return await response.json()
 }
+
+export const createAnecdote = async (newEntry) => {
+  const options = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(newEntry)
+  }
+
+  const response = await fetch(baseUrl, options)
+
+  if (!response.ok) {
+    throw new Error('Failed to save entry')
+  }
+
+  return await response.json()
+}
