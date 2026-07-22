@@ -2,8 +2,11 @@ import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query'
 import { getAnecdotes, updateAnecdote } from './requests'
+import NotifyContext from './components/NotifyContext'
+import { useContext } from 'react'
 
 const App = () => {
+  const { dispatch } = useContext(NotifyContext)
   const queryClient = useQueryClient()
 
   const updateEntryMutation = useMutation({
@@ -11,6 +14,10 @@ const App = () => {
     onSuccess: (updatedEntry) => {
       const entries = queryClient.getQueryData(['anecdotes'])
       queryClient.setQueryData(['anecdotes'], entries.map((entry) => entry.id === updatedEntry.id ? updatedEntry : entry))
+      dispatch({ type: 'SET_NOTIFICATION', message: `Anecdote "${updatedEntry.content}" has been updated` })
+      setTimeout(() => {
+        dispatch({ type: 'CLEAR_NOTIFICATION'})
+        }, 5000)
     }
   })
 
@@ -36,7 +43,6 @@ const App = () => {
   return (
     <div>
       <h3>Anecdote app</h3>
-
       <Notification />
       <AnecdoteForm />
 
@@ -49,7 +55,7 @@ const App = () => {
           </div>
         </div>
       ))}
-    </div>
+      </div>
   )
 }
 
