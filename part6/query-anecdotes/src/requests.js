@@ -18,9 +18,12 @@ export const createAnecdote = async (newEntry) => {
   const response = await fetch(baseUrl, options)
 
   if (!response.ok) {
-    throw new Error('Failed to save entry')
+    if (response.statusText === "Bad Request") {
+      throw new Error('too short anecdote, must be at least 5 characters')
+    } else {
+      throw new Error('Failed to save entry')
+    }
   }
-
   return await response.json()
 }
 
