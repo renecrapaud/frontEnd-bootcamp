@@ -7,9 +7,14 @@ const [value, setValue] = useState('')
     setValue(event.target.value)
   }
 
+  const onReset = () => {
+    setValue('')
+  }
+
   return {
     type,
     value,
-    onChange
+    onChange,
+    onReset
   }
 }
