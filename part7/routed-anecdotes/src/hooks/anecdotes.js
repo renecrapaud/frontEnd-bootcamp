@@ -16,8 +16,15 @@ export const useAnecdotes = () => {
     })
   }
 
+  const onDeleteEntry = (id) => {
+    anecdoteService.deleteEntry(id).then(data => {
+      setAnecdotes(anecdotes.filter(a => a.id !== data.id))
+    })
+  }
+
   return {
     anecdotes,
-    onAddEntry
+    onAddEntry,
+    onDeleteEntry
   }
 }
