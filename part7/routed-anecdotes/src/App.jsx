@@ -7,10 +7,10 @@ import CreateNew from './components/CreateNew'
 import { useAnecdotes } from './hooks/anecdotes'
 
 const App = () => {
-  const { anecdotes } = useAnecdotes()
+  const { anecdotes, onAddEntry } = useAnecdotes()
 
   const addAnecdote = (anecdote) => {
-    //setAnecdotes(anecdotes.concat({ ...anecdote, id: Math.round(Math.random() * 10000) }))
+    onAddEntry(anecdote)
   }
 
   return (
