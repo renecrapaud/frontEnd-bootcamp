@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { create } from "zustand";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
@@ -9,12 +10,26 @@ import AddForm from "./components/AddForm";
 import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
 
+const useNotificationStore = create(set => ({
+  message: null,
+  setMessage: (msg) => set( state => ({ message: msg }))
+}))
+
+const useErrorNotifStore = create(set => ({
+  errorMsg: null,
+  setErrorMsg: (msg) => set( state => ({ errorMsg: msg}))
+}))
+
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
-  const [msg, setMsg] = useState(null);
   const blogFormReg = useRef();
+  const errorMsg = useErrorNotifStore(state => state.errorMsg)
+  const setErrorMsg = useErrorNotifStore(state => state.setErrorMsg);
+  const msgState = useNotificationStore(state => state.message);
+  const setMsg = useNotificationStore(state => state.setMessage)
+
+
   useEffect(() => {
     blogService.getAll().then((blogs) => {
       blogs.sort(function (a, b) {
@@ -57,7 +72,7 @@ const App = () => {
       <div>
         <h2>Blogs</h2>
         <ErrorNotification message={errorMsg} />
-        <Notification message={msg} />
+        <Notification message={msgState} />
         <ErrorBoundary>
           <h4>
             {user.username} logged in

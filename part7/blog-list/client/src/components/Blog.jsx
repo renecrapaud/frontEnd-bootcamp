@@ -23,6 +23,10 @@ const Blog = ({ blog, setBlogs, setErrorMessage, setMsg }) => {
     blogs.updateLike(blog);
     let blogsArray = await blogs.getAll();
     setBlogs(blogsArray.sort((a, b) => b.likes - a.likes));
+    setMsg("Vote registered");
+    setTimeout(() => {
+      setMsg(null);
+    }, 5000);
   };
 
   const reqDelete = async () => {
@@ -41,7 +45,10 @@ const Blog = ({ blog, setBlogs, setErrorMessage, setMsg }) => {
         }, 5000);
       }
     } else {
-      console.log("Deletion canceled");
+      setErrorMessage("Deletion canceled");
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 5000);
     }
   };
   if (!deleted) {
