@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import ErrorBoundary from "./components/ErrorBoundary";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import ErrorNotification from "./components/ErrorNotification";
@@ -57,30 +58,33 @@ const App = () => {
         <h2>Blogs</h2>
         <ErrorNotification message={errorMsg} />
         <Notification message={msg} />
-        <h4>
-          {user.username} logged in
-          <span> </span>
-          <button onClick={doLogout}>Logout</button>
-          <br />
-          <Togglable buttonLabel="New Entry" ref={blogFormReg}>
-            <AddForm
-              setErrorMessage={setErrorMsg}
+        <ErrorBoundary >
+          <h4>
+            {user.username} logged in
+            <span> </span>
+            <button onClick={doLogout}>Logout</button>
+          </h4>
+          <div  style={{ margin: 10 + "px" }}>
+            <Togglable buttonLabel="New Entry" ref={blogFormReg}>
+              <AddForm
+                setErrorMessage={setErrorMsg}
+                setBlogs={setBlogs}
+                blogsBef={blogs}
+                setMsg={setMsg}
+                blogFormRef={blogFormReg}
+              />
+            </Togglable>
+          </div>
+          {blogs.map((blog) => (
+            <Blog
+              key={blog.id}
+              blog={blog}
               setBlogs={setBlogs}
-              blogsBef={blogs}
+              setErrorMessage={setErrorMsg}
               setMsg={setMsg}
-              blogFormRef={blogFormReg}
             />
-          </Togglable>
-        </h4>
-        {blogs.map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            setBlogs={setBlogs}
-            setErrorMessage={setErrorMsg}
-            setMsg={setMsg}
-          />
-        ))}
+          ))}
+        </ErrorBoundary>
       </div>
     );
   }

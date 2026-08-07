@@ -46,6 +46,7 @@ const Blog = ({ blog, setBlogs, setErrorMessage, setMsg }) => {
   };
   if (!deleted) {
     if (visible) {
+      // throw new Error('simulated error') // highlight line
       return (
         <div style={blogStyle}>
           <span id="blog-title">{blog.title}</span>{" "}
