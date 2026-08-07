@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { create } from "zustand";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Blog from "./components/Blog";
@@ -22,21 +22,8 @@ const useErrorNotifStore = create(set => ({
 
 const useBlogsStore = create(set => ({
   blogs: [],
-  setBlogsState: (blogsNew) => set( state => ({ blogs: blogsNew}))
-}))
-
-const App = () => {
-  const [user, setUser] = useState(null);
-  const blogFormReg = useRef();
-  const blogs = useBlogsStore(state => state.blogs)
-  const setBlogs = useBlogsStore(state => state.setBlogsState);
-  const errorMsg = useErrorNotifStore(state => state.errorMsg)
-  const setErrorMsg = useErrorNotifStore(state => state.setErrorMsg);
-  const msgState = useNotificationStore(state => state.message);
-  const setMsg = useNotificationStore(state => state.setMessage)
-
-
-  useEffect(() => {
+  setBlogs: (blogsNew) => set(state => ({ blogs: blogsNew })),
+  fetchEntries: async () => {
     blogService.getAll().then((blogs) => {
       blogs.sort(function (a, b) {
         if (a.likes < b.likes) {
@@ -47,9 +34,30 @@ const App = () => {
         }
         return 0;
       });
-      setBlogs(blogs);
-
+      set({ blogs: blogs });
     });
+  }
+}))
+
+const useUserStore = create(set => ({
+  usr: null,
+  setUserState: (userState) => set( state => ({ usr: userState}))
+}))
+
+const App = () => {
+  const blogFormReg = useRef();
+
+  const user = useUserStore(state => state.usr);
+  const setUser = useUserStore(state => state.setUserState);
+  const { blogs, setBlogs, fetchEntries } = useBlogsStore();
+  const errorMsg = useErrorNotifStore(state => state.errorMsg)
+  const setErrorMsg = useErrorNotifStore(state => state.setErrorMsg);
+  const msgState = useNotificationStore(state => state.message);
+  const setMsg = useNotificationStore(state => state.setMessage)
+
+
+  useEffect(() => {
+    fetchEntries();
   }, []);
 
   useEffect(() => {

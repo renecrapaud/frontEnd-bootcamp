@@ -1,10 +1,20 @@
-import { useState } from "react";
+import { create } from "zustand";
 import loginService from "../services/login";
 import blogs from "../services/blogs";
 
+const usePasswordStore = create(set => ({
+  password: "",
+  setPassword: (value) => set(state => ({ password: value }))
+}))
+
+const useUsernameStore = create(set => ({
+  username: "",
+  setUsername: (value) => set( state => ({ username: value}))
+}))
 const LoginForm = ({ setErrorMessage, setUsr }) => {
-  const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
+
+  const { password, setPassword } = usePasswordStore();
+  const { username, setUsername } = useUsernameStore();
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -16,7 +26,6 @@ const LoginForm = ({ setErrorMessage, setUsr }) => {
       setUsername("");
       setPassword("");
     } catch (exception) {
-      console.log(exception);
       setErrorMessage("Wrong credentials");
       setTimeout(() => {
         setErrorMessage(null);
