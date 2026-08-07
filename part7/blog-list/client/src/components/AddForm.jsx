@@ -1,32 +1,43 @@
-import { useState } from 'react'
-import blogs from '../services/blogs'
+import { useState } from "react";
+import blogs from "../services/blogs";
 
-const AddForm = ({ setErrorMessage, setBlogs, blogsBef, setMsg, blogFormRef }) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+const AddForm = ({
+  setErrorMessage,
+  setBlogs,
+  blogsBef,
+  setMsg,
+  blogFormRef,
+}) => {
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [url, setUrl] = useState("");
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
     try {
-      const resp = await blogs.createNew({ title, author, url })
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-      const newBlog = { title: resp.title, author: resp.author, url: resp.url, id: resp.id }
-      setBlogs(blogsBef.concat(newBlog))
-      setMsg('List Entry added successfully')
-      blogFormRef.current.toggleVisibility()
+      const resp = await blogs.createNew({ title, author, url });
+      setTitle("");
+      setAuthor("");
+      setUrl("");
+      const newBlog = {
+        title: resp.title,
+        author: resp.author,
+        url: resp.url,
+        id: resp.id,
+      };
+      setBlogs(blogsBef.concat(newBlog));
+      setMsg("List Entry added successfully");
+      blogFormRef.current.toggleVisibility();
       setTimeout(() => {
-        setMsg(null)
-      }, 5000)
+        setMsg(null);
+      }, 5000);
     } catch (exception) {
-      setErrorMessage(`Error saving data: ${exception.message}`)
+      setErrorMessage(`Error saving data: ${exception.message}`);
       setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+        setErrorMessage(null);
+      }, 5000);
     }
-  }
+  };
 
   return (
     <div>
@@ -61,7 +72,7 @@ const AddForm = ({ setErrorMessage, setBlogs, blogsBef, setMsg, blogFormRef }) =
         <button type="submit"> Create </button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default AddForm
+export default AddForm;

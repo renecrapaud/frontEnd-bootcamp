@@ -58,13 +58,13 @@ const App = () => {
         <h2>Blogs</h2>
         <ErrorNotification message={errorMsg} />
         <Notification message={msg} />
-        <ErrorBoundary >
+        <ErrorBoundary>
           <h4>
             {user.username} logged in
             <span> </span>
             <button onClick={doLogout}>Logout</button>
           </h4>
-          <div  style={{ margin: 10 + "px" }}>
+          <div style={{ margin: 10 + "px" }}>
             <Togglable buttonLabel="New Entry" ref={blogFormReg}>
               <AddForm
                 setErrorMessage={setErrorMsg}

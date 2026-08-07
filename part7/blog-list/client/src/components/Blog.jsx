@@ -21,8 +21,8 @@ const Blog = ({ blog, setBlogs, setErrorMessage, setMsg }) => {
     setLikes(likes + 1);
     blog.likes += 1;
     blogs.updateLike(blog);
-    let blogsArray = await blogs.getAll()
-    setBlogs(blogsArray.sort((a, b) => b.likes - a.likes))
+    let blogsArray = await blogs.getAll();
+    setBlogs(blogsArray.sort((a, b) => b.likes - a.likes));
   };
 
   const reqDelete = async () => {
