@@ -20,10 +20,16 @@ const useErrorNotifStore = create(set => ({
   setErrorMsg: (msg) => set( state => ({ errorMsg: msg}))
 }))
 
+const useBlogsStore = create(set => ({
+  blogs: [],
+  setBlogsState: (blogsNew) => set( state => ({ blogs: blogsNew}))
+}))
+
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const blogFormReg = useRef();
+  const blogs = useBlogsStore(state => state.blogs)
+  const setBlogs = useBlogsStore(state => state.setBlogsState);
   const errorMsg = useErrorNotifStore(state => state.errorMsg)
   const setErrorMsg = useErrorNotifStore(state => state.setErrorMsg);
   const msgState = useNotificationStore(state => state.message);
@@ -42,6 +48,7 @@ const App = () => {
         return 0;
       });
       setBlogs(blogs);
+
     });
   }, []);
 
